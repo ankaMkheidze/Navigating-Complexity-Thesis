@@ -8,7 +8,7 @@ The clustering techniques are k-means and AGNES.
 ##Data Sets
 The data sets are: sample of 5000 observations from Jester Dataset, Swiss roll with 3 clusters, Broken swiss roll, Helix, Twinpeaks, and High-Dimensional data set. The artificial data sets are highly inspired by [Matlab-toolbox-for-Dimensionality-Reduction](https://github.com/UMD-ISL/Matlab-Toolbox-for-Dimensionality-Reduction).
 
-##Steps:
+## Steps:
 
 For every data set there are 3 files: the results, umap tuning and R workspace. 
 1. Open the results file and generate / load the data set. 
@@ -16,7 +16,7 @@ For every data set there are 3 files: the results, umap tuning and R workspace.
 3. Go to tuning file and input the number of clusters that were given as optimal and run the whole code. As output you will get the top 5 performing combination of different hyperparameters and choose the best overall one.
 4. Go back to results file and run the rest of the code, which will yield different visualizations for data sets and the values for internal validation indexes in a matrix results_evaluation. 
 
-##Note:
+## Note:
 1. The final results that have been produced from this reseach and the runs can be found in each workspace of dataset.
 2. There are some necessary libraries that need instalation and they will be given in the results file of every function.
 3. The high dimensional data set uses Matlab code for data generation and an excel file with the final resulting data set given aswell.
