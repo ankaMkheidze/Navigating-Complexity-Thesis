@@ -20,4 +20,4 @@ For every data set, there are 2 files: the results, and UMAP tuning.
 1. The final results that have been produced from this research and the runs can be found in the workspace of the dataset with the file being too large for Github, so upon request, it can be shared.
 2. There are some necessary libraries that need installation and they will be given in the results file of every function.
 3. The high dimensional data set uses Matlab code for data generation and an Excel file with the final resulting data set given as well.
-4. The seeds for every function are preset, and changing the will alter the results.
+4. The seeds for every function are preset, and changing the it will alter the results.
