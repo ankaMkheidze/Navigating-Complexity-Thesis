@@ -54,7 +54,9 @@ generate_data_broken_swiss <- function(n, noise) {
 
 km <- kmeans(X, centers = 6)
 
-plot(X[,2], X[,3], pch = 16, col = km$cluster)
+plot(broken_swiss_roll16, col = kmeans_bsr_umap$cluster)
+
+worst_db_a_bsr_3
 
 set.seed(1408)
 broken_swiss_roll <- generate_data_broken_swiss(5000, 0.01)
