@@ -43,7 +43,7 @@ swiss_roll_generation <- function(n, noise){
 
 set.seed(6070)
 swiss_data <- swiss_roll_generation(5000, 0.01)
-plot(swiss_data[,1], swiss_data[,3], pch = 20, col = k_means_nodr_sr$cluster)
+# plot(swiss_data[,1], swiss_data[,3], pch = 20, col = k_means_nodr_sr$cluster)
 
 set.seed(1809)
 result_k_sr <- NbClust(data = swiss_data, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index  ="all", alphaBeale = 0.1)
