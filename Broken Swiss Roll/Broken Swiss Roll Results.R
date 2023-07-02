@@ -181,7 +181,6 @@ calinski_k_means_bsr_tsne <-   calinhara(tsne_bsr,clusters_tsne_bsr,cn=max(clust
 
 
 # Davies-Bouldin index
-
 davies_k_means_bsr_tsne <-index.DB(tsne_bsr, clusters_tsne_bsr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 
 results_evaluation_bsr[5,] <- c("k-means t-SNE", silhouette_k_means_bsr_tsne, 
@@ -235,7 +234,6 @@ calinski_k_means_bsr_umap <-   calinhara(umap_bsr,kmeans_cluster_bsr_umap,cn=max
 
 
 # Davies-Bouldin index
-
 davies_k_means_bsr_umap <-index.DB(umap_bsr,kmeans_cluster_bsr_umap, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 
 results_evaluation_bsr[7,] <- c("k-means UMAP", silhouette_k_means_bsr_umap, 
@@ -269,131 +267,6 @@ results_evaluation_bsr[8,] <- c("AGNES UMAP", silhouette_agnes_bsr_umap,
                                 dunn_agnes_bsr_umap, calinski_agnes_bsr_umap,
                                 davies_agnes_bsr_umap)
 
-
-#Results in 3-Dimensions
-
-results_evaluation_bsr_3d <-matrix(ncol = 5, nrow = 8)
-colnames(results_evaluation_bsr_3d) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
-
-results_evaluation_bsr_3d[1,] <- c("No DR K", silhouette_k_means_bsr_nodr, 
-                                dunn_k_means_bsr_nodr, calinski_k_means_bsr_nodr,
-                                davies_k_means_bsr_nodr)
-
-results_evaluation_bsr_3d[2,] <- c("No DR A", silhouette_agnes_bsr_nodr, 
-                                dunn_agnes_bsr_nodr, calinski_agnes_bsr_nodr,
-                                davies_agnes_bsr_nodr)
-
-silhouette_k_means_bsr_pca_3d <- silhouette(clusters_pca_bsr, dist(bsr_data))
-silhouette_k_means_bsr_pca_3d <- as.matrix(silhouette_k_means_bsr_pca_3d)
-silhouette_k_means_bsr_pca_3d <- silhouette_k_means_bsr_pca_3d[,3]
-silhouette_k_means_bsr_pca_3d <- mean(silhouette_k_means_bsr_pca_3d)
-
-# Dunn index
-dunn_k_means_bsr_pca_3d <- dunn( distance = NULL, clusters_pca_bsr, Data = bsr_data, method = "euclidean")
-
-# Calinski-Harabasz index
-calinski_k_means_bsr_pca_3d <-   calinhara(bsr_data,clusters_pca_bsr,cn=max(clusters_pca_bsr))
-
-
-# Davies-Bouldin index
-davies_k_means_bsr_pca_3d <-index.DB(bsr_data, clusters_pca_bsr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
-
-results_evaluation_bsr_3d[3,] <- c("k-means PCA", silhouette_k_means_bsr_pca_3d, 
-                                dunn_k_means_bsr_pca_3d, calinski_k_means_bsr_pca_3d,
-                                davies_k_means_bsr_pca_3d)
-
-
-silhouette_agnes_bsr_pca_3d <- silhouette(cut_agnes_bsr_pca, dist(bsr_data))
-silhouette_agnes_bsr_pca_3d <- as.matrix(silhouette_agnes_bsr_pca_3d)
-silhouette_agnes_bsr_pca_3d <- silhouette_agnes_bsr_pca_3d[,3]
-silhouette_agnes_bsr_pca_3d <- mean(silhouette_agnes_bsr_pca_3d)
-
-dunn_agnes_bsr_pca_3d <- dunn( distance = NULL, Data = bsr_data, cut_agnes_bsr_pca, method = "euclidean")
-calinski_agnes_bsr_pca_3d <-   calinhara(bsr_data, cut_agnes_bsr_pca,cn=max(cut_agnes_bsr_pca))
-
-davies_agnes_bsr_pca_3d <-index.DB(bsr_data, cut_agnes_bsr_pca, d=NULL, centrotypes="centroids", p=2, q=2)$DB
-results_evaluation_bsr_3d[4,] <- c("PCA A", silhouette_agnes_bsr_pca_3d, 
-                                dunn_agnes_bsr_pca_3d, calinski_agnes_bsr_pca_3d,
-                                davies_agnes_bsr_pca_3d)
-
-
-silhouette_k_means_bsr_tsne_3d <- silhouette(clusters_tsne_bsr, dist(bsr_data))
-silhouette_k_means_bsr_tsne_3d <- as.matrix(silhouette_k_means_bsr_tsne_3d)
-silhouette_k_means_bsr_tsne_3d <- silhouette_k_means_bsr_tsne_3d[,3]
-silhouette_k_means_bsr_tsne_3d <- mean(silhouette_k_means_bsr_tsne_3d)
-
-# Dunn index
-dunn_k_means_bsr_tsne_3d <- dunn( distance = NULL, clusters_tsne_bsr, Data = bsr_data, method = "euclidean")
-
-# Calinski-Harabasz index
-calinski_k_means_bsr_tsne_3d <-   calinhara(bsr_data,clusters_tsne_bsr,cn=max(clusters_tsne_bsr))
-
-
-# Davies-Bouldin index
-
-davies_k_means_bsr_tsne_3d <-index.DB(bsr_data, clusters_tsne_bsr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
-
-results_evaluation_bsr_3d[5,] <- c("t-SNE K", silhouette_k_means_bsr_tsne_3d, 
-                                dunn_k_means_bsr_tsne_3d, calinski_k_means_bsr_tsne_3d,
-                                davies_k_means_bsr_tsne_3d)
-
-
-silhouette_agnes_bsr_tsne_3d <- silhouette(cut_agnes_bsr_tsne, dist(bsr_data))
-silhouette_agnes_bsr_tsne_3d <- as.matrix(silhouette_agnes_bsr_tsne_3d)
-silhouette_agnes_bsr_tsne_3d <- silhouette_agnes_bsr_tsne_3d[,3]
-silhouette_agnes_bsr_tsne_3d <- mean(silhouette_agnes_bsr_tsne_3d)
-
-dunn_agnes_bsr_tsne_3d <- dunn( distance = NULL, cut_agnes_bsr_tsne, Data = bsr_data, method = "euclidean")
-calinski_agnes_bsr_tsne_3d <-   calinhara(bsr_data, cut_agnes_bsr_tsne,cn=max(cut_agnes_bsr_tsne))
-
-davies_agnes_bsr_tsne_3d <-index.DB(bsr_data, cut_agnes_bsr_tsne, d=NULL, centrotypes="centroids", p=2, q=2)$DB
-
-results_evaluation_bsr_3d[6,] <- c("t-SNE A", silhouette_agnes_bsr_tsne_3d, 
-                                dunn_agnes_bsr_tsne_3d, calinski_agnes_bsr_tsne_3d,
-                                davies_agnes_bsr_tsne_3d)
-
-
-silhouette_k_means_bsr_umap_3d <- silhouette(kmeans_cluster_bsr_umap, dist(bsr_data))
-silhouette_k_means_bsr_umap_3d <- as.matrix(silhouette_k_means_bsr_umap_3d)
-silhouette_k_means_bsr_umap_3d <- silhouette_k_means_bsr_umap_3d[,3]
-silhouette_k_means_bsr_umap_3d <- mean(silhouette_k_means_bsr_umap_3d)
-
-# Dunn index
-dunn_k_means_bsr_umap_3d <- dunn( distance = NULL, kmeans_cluster_bsr_umap, Data = bsr_data, method = "euclidean")
-
-
-# Calinski-Harabasz index
-calinski_k_means_bsr_umap_3d <-   calinhara(bsr_data,kmeans_cluster_bsr_umap,cn=max(kmeans_cluster_bsr_umap))
-
-
-# Davies-Bouldin index
-
-davies_k_means_bsr_umap_3d <-index.DB(bsr_data,kmeans_cluster_bsr_umap, d=NULL, centrotypes="centroids", p=2, q=2)$DB
-
-results_evaluation_bsr_3d[7,] <- c("k-means UMAP", silhouette_k_means_bsr_umap_3d, 
-                                dunn_k_means_bsr_umap_3d, calinski_k_means_bsr_umap_3d,
-                                davies_k_means_bsr_umap_3d)
-
-
-silhouette_agnes_bsr_umap_3d <- silhouette(cut_agnes_umap_bsr, dist(bsr_data))
-silhouette_agnes_bsr_umap_3d <- as.matrix(silhouette_agnes_bsr_umap_3d)
-silhouette_agnes_bsr_umap_3d <- silhouette_agnes_bsr_umap_3d[,3]
-silhouette_agnes_bsr_umap_3d<- mean(silhouette_agnes_bsr_umap_3d)
-
-
-dunn_agnes_bsr_umap_3d <- dunn( distance = NULL, cut_agnes_umap_bsr, Data = bsr_data, method = "euclidean")
-
-
-# Calinski-Harabasz index
-calinski_agnes_bsr_umap_3d <-   calinhara(bsr_data,cut_agnes_umap_bsr,cn=max(cut_agnes_umap_bsr))
-
-
-# Davies-Bouldin index
-
-davies_agnes_bsr_umap_3d <-index.DB(bsr_data, cut_agnes_umap_bsr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
-results_evaluation_bsr_3d[8,] <- c("AGNES UMAP", silhouette_agnes_bsr_umap_3d, 
-                                dunn_agnes_bsr_umap_3d, calinski_agnes_bsr_umap_3d,
-                                davies_agnes_bsr_umap_3d)
 
 #Visualizations 2-D
 
@@ -486,7 +359,7 @@ legend( s$xyz.convert(-2, -2, 3), legend =c(1,2,3), col = c("#FF0000", "#000FFF"
                                                                    "#00FF00") ,pch = 16)
 
 dev.new()
-s <- scatterplot3d(bsr_data, pch=20, color = rainbow(3)[cut_agnes_bsr_nodr], type = "p", main = "")
+s <- scatterplot3d(bsr_data, pch=20, color = rainbow(3)[cut_agnes_bsr_nodr], type = "p", main = "AGNES no DR")
 legend( s$xyz.convert(-2, -2, 3), legend= c(1,2,3), col = c("#FF0000", "#000FFF", 
                                                      "#00FF00") ,pch = 16)
 
