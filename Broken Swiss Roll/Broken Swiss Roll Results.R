@@ -43,6 +43,7 @@ generate_data_broken_swiss <- function(n, noise) {
   return(data)
 }
 
+#Generate Data
 set.seed(1408)
 broken_swiss_roll <- generate_data_broken_swiss(5000, 0.01)
 plot(broken_swiss_roll[,2], broken_swiss_roll[,3], pch = 16)
@@ -50,7 +51,7 @@ plot(broken_swiss_roll[,2], broken_swiss_roll[,3], pch = 16)
 bsr_data <- cbind(broken_swiss_roll$X.1, broken_swiss_roll$X.2, broken_swiss_roll$X.3)
 colnames(bsr_data) <- c("Dim1", "Dim2", "Dim3")
 
-
+#Find Optimal number of clusters
 set.seed(87)
 result_k_bs <- NbClust(data = broken_swiss_roll, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index  ="all", alphaBeale = 0.1)
 set.seed(1)
@@ -59,10 +60,13 @@ result_a_bs <- NbClust(data = broken_swiss_roll, distance = "euclidean", min.nc 
 result_k_bs$Best.nc
 result_a_bs$Best.nc
 
+#Input optimal number of clusters
 clust_num <- 3
 
+#initialize results matrix
 results_evaluation_bsr <- matrix(ncol = 5, nrow = 8)
 colnames(results_evaluation_bsr) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
+
 #Method without DR and k-means
 set.seed(123)
 bsr_data <- broken_swiss_roll
@@ -114,7 +118,8 @@ results_evaluation_bsr[2,] <- c("AGNES NoDR", silhouette_agnes_bsr_nodr,
 set.seed(123)
 bsr_pca = prcomp(bsr_data)
 bsr_pca = bsr_pca$x[,1:2]
-#kmeans
+
+#kmeans PCA
 set.seed(123)
 k_means_pca_bsr = kmeans(bsr_pca,centers  = clust_num)
 clusters_pca_bsr <- k_means_pca_bsr$cluster
@@ -163,6 +168,7 @@ results_evaluation_bsr[4,] <- c("AGNES PCA", silhouette_agnes_bsr_pca,
 set.seed(123)
 tsne_bsr <- Rtsne(bsr_data, dims = 2)
 tsne_bsr <- tsne_bsr$Y
+
 #k-means with t-sne
 set.seed(123)
 k_means_tsne_bsr = kmeans(tsne_bsr,centers  = clust_num)
