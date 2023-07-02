@@ -26,19 +26,17 @@ helix_data_generation <- function(n , rmajor = 2, rminor = 1, nwinds = 5) {
   df <- data.frame(x, y, z)
   
   dist <- sqrt(rowSums(df ^ 2))
-  #df$color <- linear_color_map(dist)
+ 
   
   df
 }
+
+#Generate Data
 set.seed(123)
 helix <- helix_data_generation(n = 5000)
-kmeans_h <- kmeans(helix, centers = 5)
-scatterplot3d(helix, color = rainbow(5)[kmeans_h$cluster])
-
 helix_data <- helix
 
-
-
+#Find optimal number of Clusters
 set.seed(123)
 result_k_helix <- NbClust(data = helix_data, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index  ="all", alphaBeale = 0.1)
 set.seed(123)
@@ -47,16 +45,13 @@ result_a_helix_ward2 <- NbClust(data = helix_data, distance = "euclidean", min.n
 result_k_helix$Best.nc
 result_a_helix_duda <- NbClust(helix_data, distance = "euclidean", method = "ward.D2", min.nc = 2, max.nc = 10, index = "pseudot2")
 
+#Initilize results matrix
 results_evaluation_helix <- matrix(ncol = 5, nrow = 8)
 colnames(results_evaluation_helix) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
 
-#lets see if this intrinsic clustering is better than k-means or agnes
-set.seed(123)
-helix_data <- helix_data_generation(n = 5000)
+#Input optimal number of clusters
 clust_num_helix <- 5
 
-results_evaluation_helix <- matrix(ncol = 5, nrow = 8)
-colnames(results_evaluation_helix) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
 #Method without DR and k-means
 set.seed(123)
 k_means_nodr_helix = kmeans(helix_data,centers  = clust_num_helix)
@@ -107,7 +102,7 @@ results_evaluation_helix[2,] <- c("AGNES NoDR", silhouette_agnes_helix_nodr,
 set.seed(123)
 helix_pca = prcomp(helix_data)
 helix_pca = helix_pca$x[,1:2]
-#kmeans
+#kmeans PCA
 set.seed(123)
 k_means_pca_helix = kmeans(helix_pca,centers  = clust_num_helix)
 clusters_pca_helix <- k_means_pca_helix$cluster
