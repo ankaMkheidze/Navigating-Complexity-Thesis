@@ -25,7 +25,7 @@ library(clusterSim)
 library(Rtsne)
 library(ggpubr)
 
-#Load Data
+#Load Data & Adjust the path to jester excel files!
 jester_data_1 <- read_excel("C:/Users/ankam/OneDrive/Desktop/jester-data-1.xls",
                             col_names = FALSE, na = c("99", "99.00"))
 
