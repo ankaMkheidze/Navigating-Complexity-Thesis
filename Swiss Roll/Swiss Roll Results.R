@@ -41,10 +41,12 @@ swiss_roll_generation <- function(n, noise){
   return(data)
 }
 
+#Generate Dataset
 set.seed(6070)
 swiss_data <- swiss_roll_generation(5000, 0.01)
 plot(swiss_data[,1], swiss_data[,3], pch = 20)
 
+#Find optimal number of Clusters
 set.seed(1809)
 result_k_sr <- NbClust(data = swiss_data, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index  ="all", alphaBeale = 0.1)
 result_k_sr$Best.nc
@@ -52,14 +54,16 @@ set.seed(1809)
 result_a_sr <- NbClust(data = swiss_data, distance = "euclidean", min.nc = 2, max.nc = 10, method = "ward.D2", index  ="all", alphaBeale = 0.1)
 result_a_sr$Best.nc
 
+#Input optimal number of clusters
+clust_num_swiss <- 3
 
-
-
+#Initialize results matrix
 results_evaluation_sr <- matrix(ncol = 5, nrow = 8)
 colnames(results_evaluation_sr) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
+
 #Method without DR and k-means
 set.seed(123)
-k_means_nodr_sr = kmeans(swiss_data,centers = 3)
+k_means_nodr_sr = kmeans(swiss_data,centers = clust_num_swiss)
 clusts_nodr_sr <- k_means_nodr_sr$cluster
 silhouette_k_means_sr_nodr <- silhouette(clusts_nodr_sr, dist(swiss_data))
 silhouette_k_means_sr_nodr <- as.matrix(silhouette_k_means_sr_nodr)
@@ -74,7 +78,7 @@ calinski_k_means_sr_nodr <-   calinhara(swiss_data,clusts_nodr_sr,cn=max(clusts_
 
 
 # Davies-Bouldin index
-#KLEOBAA ES
+
 davies_k_means_sr_nodr <-index.DB(swiss_data, clusts_nodr_sr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 
 results_evaluation_sr[1,] <- c("K-means NoDR", silhouette_k_means_sr_nodr, 
@@ -86,7 +90,7 @@ results_evaluation_sr[1,] <- c("K-means NoDR", silhouette_k_means_sr_nodr,
 set.seed(123)
 dist_sr_nodr <- dist(swiss_data, method= "euclidean")
 agnes_sr_nodr <- hclust(dist_sr_nodr, method = "ward.D")
-cut_agnes_sr_nodr <- cutree(agnes_sr_nodr, k = 3)
+cut_agnes_sr_nodr <- cutree(agnes_sr_nodr, k = clust_num_swiss)
 
 
 silhouette_agnes_sr_nodr <- silhouette(cut_agnes_sr_nodr, dist(swiss_data))
@@ -108,9 +112,9 @@ results_evaluation_sr[2,] <- c("AGNES NoDR", silhouette_agnes_sr_nodr,
 set.seed(123)
 sr_pca = prcomp(swiss_data)
 sr_pca = sr_pca$x[,1:2]
-#kmeans
+#kmeans PCA
 set.seed(123)
-k_means_pca_sr = kmeans(sr_pca,centers = 3)
+k_means_pca_sr = kmeans(sr_pca,centers = clust_num_swiss)
 clusters_pca_sr <- k_means_pca_sr$cluster
 silhouette_k_means_sr_pca <- silhouette(clusters_pca_sr, dist(sr_pca))
 silhouette_k_means_sr_pca <- as.matrix(silhouette_k_means_sr_pca)
@@ -125,7 +129,7 @@ calinski_k_means_sr_pca <-   calinhara(sr_pca,clusters_pca_sr,cn=max(clusters_pc
 
 
 # Davies-Bouldin index
-#KLEOBAA ES
+
 davies_k_means_sr_pca <-index.DB(sr_pca, clusters_pca_sr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 
 results_evaluation_sr[3,] <- c("k-means PCA", silhouette_k_means_sr_pca, 
@@ -136,7 +140,7 @@ results_evaluation_sr[3,] <- c("k-means PCA", silhouette_k_means_sr_pca,
 set.seed(123)
 dist_sr_pca <- dist(sr_pca, method= "euclidean")
 agnes_sr_pca  <- hclust(dist_sr_pca, method = "ward.D" )
-cut_agnes_sr_pca <- cutree(agnes_sr_pca, k = 3)
+cut_agnes_sr_pca <- cutree(agnes_sr_pca, k = clust_num_swiss)
 
 silhouette_agnes_sr_pca <- silhouette(cut_agnes_sr_pca, dist(sr_pca))
 silhouette_agnes_sr_pca <- as.matrix(silhouette_agnes_sr_pca)
@@ -160,7 +164,7 @@ tsne_sr <- tsne_sr$Y
 #k-means with t-sne
 set.seed(123)
 
-k_means_tsne_sr = kmeans(tsne_sr,centers = 3)
+k_means_tsne_sr = kmeans(tsne_sr,centers = clust_num_swiss)
 clusters_tsne_sr <- k_means_tsne_sr$cluster
 
 silhouette_k_means_sr_tsne <- silhouette(clusters_tsne_sr, dist(tsne_sr))
@@ -176,7 +180,7 @@ calinski_k_means_sr_tsne <-   calinhara(tsne_sr,clusters_tsne_sr,cn=max(clusters
 
 
 # Davies-Bouldin index
-#KLEOBAA ES
+
 davies_k_means_sr_tsne <-index.DB(tsne_sr, clusters_tsne_sr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 
 results_evaluation_sr[5,] <- c("k-means t-SNE", silhouette_k_means_sr_tsne, 
@@ -189,7 +193,7 @@ results_evaluation_sr[5,] <- c("k-means t-SNE", silhouette_k_means_sr_tsne,
 set.seed(123)
 dist_sr_tsne <- dist(tsne_sr, method= "euclidean")
 agnes_sr_tsne  <- hclust(dist_sr_tsne, method = "ward.D" )
-cut_agnes_sr_tsne <- cutree(agnes_sr_tsne, k = 3)
+cut_agnes_sr_tsne <- cutree(agnes_sr_tsne, k = clust_num_swiss)
 
 
 silhouette_agnes_sr_tsne <- silhouette(cut_agnes_sr_tsne, dist(tsne_sr))
@@ -215,7 +219,7 @@ umap_sr <- umap(swiss_data, n_neighbors = 50, min_dist = 0.001, n_components = 2
                  init = "laplacian", learning_rate = 5.0)
 #Kmeans Umap
 set.seed(123)
-kmeans_sr_umap <- kmeans(umap_sr, centers = 3)
+kmeans_sr_umap <- kmeans(umap_sr, centers = clust_num_swiss)
 
 
 kmeans_cluster_sr_umap <- kmeans_sr_umap$cluster
@@ -233,7 +237,7 @@ calinski_k_means_sr_umap <-   calinhara(umap_sr,kmeans_cluster_sr_umap,cn=max(km
 
 
 # Davies-Bouldin index
-#KLEOBAA ES
+
 davies_k_means_sr_umap <-index.DB(umap_sr,kmeans_cluster_sr_umap, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 
 results_evaluation_sr[7,] <- c("k-means UMAP", silhouette_k_means_sr_umap, 
@@ -244,7 +248,7 @@ results_evaluation_sr[7,] <- c("k-means UMAP", silhouette_k_means_sr_umap,
 set.seed(123)
 dist_sr_umap <- dist(umap_sr, method= "euclidean")
 agnes_cluster_umap_sr  <- hclust(dist_sr_umap, method = "ward.D" )
-cut_agnes_umap_sr <- cutree(agnes_cluster_umap_sr, k = 3)
+cut_agnes_umap_sr <- cutree(agnes_cluster_umap_sr, k = clust_num_swiss)
 
 
 
@@ -262,7 +266,7 @@ calinski_agnes_sr_umap <-   calinhara(umap_sr,cut_agnes_umap_sr,cn=max(cut_agnes
 
 
 # Davies-Bouldin index
-#KLEOBAA ES
+
 davies_agnes_sr_umap <-index.DB(umap_sr, cut_agnes_umap_sr, d=NULL, centrotypes="centroids", p=2, q=2)$DB
 results_evaluation_sr[8,] <- c("AGNES UMAP", silhouette_agnes_sr_umap, 
                                 dunn_agnes_sr_umap, calinski_agnes_sr_umap,
