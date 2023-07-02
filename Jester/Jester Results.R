@@ -23,7 +23,8 @@ library(clusterSim)
 library(Rtsne)
 library(ggpubr)
 
-#Load Data
+#Load Data. Please modify the file path names to match your local machine.
+#The data set has 99 and 99.00 for missing values so we are converting them to NA.
 jester_data_1 <- read_excel("C:/Users/Eka/Desktop/jester-data-1.xls",
                             col_names = FALSE, na = c("99", "99.00"))
 
@@ -33,17 +34,19 @@ jester_data_2 <- read_excel("C:/Users/Eka/Desktop/jester-data-2.xls",
 jester_data_3 <- read_excel("C:/Users/Eka/Desktop/jester-data-3.xls",
                             col_names = FALSE, na = c("99", "99.00"))
 
+#Filter the data such that we only have observations with non-missing entries.
 jester <- rbind(jester_data_1,  jester_data_2, jester_data_3)
 jester_comp <- jester[complete.cases(jester),]
 jester_comp <- scale(jester_comp)
 jester_comp <- scale(jester_comp)
 
-#pretty good
+#Random sample
 set.seed(112)
 jest <- jester_comp[sample(nrow(jester_comp),5000),]
 jest <-scale(jest)
 jest <- jest[,-1]
 
+#Find optimal number of clusters
 set.seed(123)
 result_ward.D_euclidean <- NbClust(data = jest, distance = "euclidean", min.nc = 2, 
                                    max.nc = 10, method = "ward.D2", index  ="all", alphaBeale = 0.1)
@@ -55,14 +58,16 @@ result_kmeans_euclidean <- NbClust(data = jest, distance = "euclidean", min.nc =
 result_ward.D_euclidean$Best.nc
 result_kmeans_euclidean$Best.nc
 
-#K-Means for regular data
-jester_data <- jest
 
+
+#Input the optimal number of clusters
 clust_num_jester <- 3
 
-#Method without DR and k-means
+jester_data <- jest
+#Initialize results matrix
 results_evaluation_jester <- matrix(ncol = 5, nrow = 8)
 colnames(results_evaluation_jester) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
+
 #Method without DR and k-means
 set.seed(123)
 k_means_nodr_jester = kmeans(jester_data,centers  = clust_num_jester)
@@ -113,7 +118,7 @@ results_evaluation_jester[2,] <- c("AGNES NoDR", silhouette_agnes_jester_nodr,
 set.seed(123)
 jester_pca = prcomp(jester_data)
 jester_pca = jester_pca$x[,1:2]
-#kmeans
+#kmeans PCA
 set.seed(123)
 k_means_pca_jester = kmeans(jester_pca,centers  = clust_num_jester)
 clusters_pca_jester <- k_means_pca_jester$cluster
