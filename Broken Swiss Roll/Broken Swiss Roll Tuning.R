@@ -19,9 +19,11 @@ bs_data <- cbind(broken_swiss_roll$X.1, broken_swiss_roll$X.2, broken_swiss_roll
 colnames(bs_data) <- c("Dim1", "Dim2", "Dim3")
 
 n_neighbors <- c(15)
+#Create vectors for minimum distance and learning rate
 min_dist <- c(0.5, 0.1, 0.05, 0.001)
 learning_rate <- c(0.5, 1.0, 5.0)
 
+#create matrix of umap embeddings
 umaps_bsr_15 = c()
 # Initialize results
 results_k_bsr_15 <- matrix(ncol = 7, nrow = length(n_neighbors) * length(min_dist) * length(learning_rate))
