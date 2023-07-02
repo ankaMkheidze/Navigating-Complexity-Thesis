@@ -20,7 +20,7 @@ library(readxl)
 hd_data <- read_excel("C:/Users/Eka/Desktop/High Dimensional data.xlsx", 
                                     col_names = FALSE)
 
-
+#Find optimal number of clusters
 set.seed(1408)
 result_k_hd <- NbClust(data = hd_data, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index  ="all", alphaBeale = 0.1)
 set.seed(1)
@@ -29,11 +29,13 @@ result_a_hd <- NbClust(data = hd_data, distance = "euclidean", min.nc = 2, max.n
 result_k_hd$Best.nc
 result_a_hd$Best.nc
 
-
+#Input optimal number of clusters
 clust_num_hd <- 3
 
+#Initialize results matrix
 results_evaluation_hd <- matrix(ncol = 5, nrow = 8)
 colnames(results_evaluation_hd) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
+
 #Method without DR and k-means
 set.seed(123)
 k_means_nodr_hd = kmeans(hd_data,centers  = clust_num_hd)
@@ -84,7 +86,7 @@ results_evaluation_hd[2,] <- c("AGNES NoDR", silhouette_agnes_hd_nodr,
 set.seed(123)
 hd_pca = prcomp(hd_data)
 hd_pca = hd_pca$x[,1:2]
-#kmeans
+#kmeans PCA
 set.seed(123)
 k_means_pca_hd = kmeans(hd_pca,centers  = clust_num_hd)
 clusters_pca_hd <- k_means_pca_hd$cluster
