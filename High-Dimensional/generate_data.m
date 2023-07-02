@@ -17,7 +17,6 @@ function [X, t] = generate_data( n, noise)
 % This file is part of the Matlab Toolbox for Dimensionality Reduction.
 % The toolbox can be obtained from http://homepage.tudelft.nl/19j49
 %
-% (C) Laurens van der Maaten, Delft University of Technology
 
 
 	if ~exist('n', 'var')

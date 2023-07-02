@@ -5,11 +5,9 @@ install.packages("cluster.stats")
 install.packages("factoextra")
 install.packages("cluster")
 install.packages("clValid")  
-install.packages("RDRToolbox")
 install.packages("clusterSim")
 install.packages("Rtsne")
-install.packages("ellipsis")
-install.packages("pillar")
+install.packages("uwot")
 
 
 

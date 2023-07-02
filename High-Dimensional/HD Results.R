@@ -15,7 +15,7 @@ library(factoextra)
 library(clValid)
 library(clusterSim)
 
-#this data set was imported from Excel which was generated in Matlab
+#this data set was imported from Excel which was generated in Matlab. Please modify the file path to match yours.
 library(readxl)
 hd_data <- read_excel("C:/Users/Eka/Desktop/High Dimensional data.xlsx", 
                                     col_names = FALSE)
