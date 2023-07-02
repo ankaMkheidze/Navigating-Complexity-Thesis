@@ -361,7 +361,7 @@ legend( s$xyz.convert(-2, -2, 3), legend =c(1,2,3), col = c("#FF0000", "#000FFF"
                                                                    "#00FF00") ,pch = 16)
 
 dev.new()
-s <- scatterplot3d(bsr_data, pch=20, color = rainbow(3)[cut_agnes_bsr_nodr], type = "p", main = "")
+s <- scatterplot3d(bsr_data, pch=20, color = rainbow(3)[cut_agnes_bsr_nodr], type = "p", main = "AGNES no DR")
 legend( s$xyz.convert(-2, -2, 3), legend= c(1,2,3), col = c("#FF0000", "#000FFF", 
                                                      "#00FF00") ,pch = 16)
 
