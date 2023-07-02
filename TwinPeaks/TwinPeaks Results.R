@@ -12,6 +12,7 @@ library(clusterSim)
 library(Rtsne)
 library(ggpubr)
 library(fastcluster)
+
 generate_twinpeaks_3d <- function(n, noise) {
   inc <- 1.5 / sqrt(n)
   xx2 <- yy2 <- seq(-1, 1, by = inc)
@@ -30,10 +31,11 @@ generate_twinpeaks_3d <- function(n, noise) {
   data <- data.frame(X = X)
   return(data)
 }
+#Generate Data
 set.seed(123)
 twin_peaks_data <- generate_twinpeaks_3d(5000, 0.01)
 
-
+#Find optimal number of Clusters
 set.seed(123)
 result_k_tp <- NbClust(data = twin_peaks_data, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index  ="all", alphaBeale = 0.1)
 set.seed(123)
@@ -42,10 +44,13 @@ result_a_tp <- NbClust(data = twin_peaks_data, distance = "euclidean", min.nc = 
 result_k_tp$Best.nc
 result_a_tp$Best.nc
 
+#Input optimal number of clusters
 clust_num_tp <- 4
 
+#Initialize results matrix
 results_evaluation_tp <- matrix(ncol = 5, nrow = 8)
 colnames(results_evaluation_tp) <- c("Method", "Silhouette", "Dunn", "CH", "DB")
+
 #Method without DR and k-means
 set.seed(123)
 k_means_nodr_tp = kmeans(twin_peaks_data,centers  = clust_num_tp)
@@ -96,7 +101,7 @@ results_evaluation_tp[2,] <- c("AGNES NoDR", silhouette_agnes_tp_nodr,
 set.seed(123)
 tp_pca = prcomp(twin_peaks_data)
 tp_pca = tp_pca$x[,1:2]
-#kmeans
+#kmeans PCA
 set.seed(123)
 k_means_pca_tp = kmeans(tp_pca,centers  = clust_num_tp)
 clusters_pca_tp <- k_means_pca_tp$cluster
